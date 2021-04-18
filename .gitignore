@@ -1,0 +1,4 @@
+/target
+
+# ignore the JetBrains config settings
+.idea
