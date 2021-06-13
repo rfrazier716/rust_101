@@ -13,16 +13,14 @@ enum FizzBuzz {
 }
 
 // Implementing display lets us print the result
-// They all need to be strings, since calling format! on val has unknown stack size at compile time
 impl fmt::Display for FizzBuzz {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        let display = match self {
-            FizzBuzz::Fizz => String::from("fizz"),
-            FizzBuzz::Buzz => String::from("buzz"),
-            FizzBuzz::FizzBuzz => String::from("fizzbuzz"),
-            FizzBuzz::Num(val) => format!("{}", val),
-        };
-        write!(f, "{}", display)
+        match self {
+            FizzBuzz::Fizz => write!(f, "fizz"),
+            FizzBuzz::Buzz => write!(f, "buzz"),
+            FizzBuzz::FizzBuzz => write!(f, "fizzbuzz"),
+            FizzBuzz::Num(val) => write!(f, "{}", val),
+        }
     }
 }
 
@@ -32,7 +30,7 @@ impl From<i32> for FizzBuzz {
             (0, 0) => FizzBuzz::FizzBuzz,
             (0, _) => FizzBuzz::Fizz,
             (_, 0) => FizzBuzz::Buzz,
-            (_, _) => FizzBuzz::Num(num),
+            _ => FizzBuzz::Num(num),
         }
     }
 }
