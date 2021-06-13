@@ -1,37 +1,35 @@
 // Did not know this comes from a children's game https://en.wikipedia.org/wiki/Fizz_buzz
-fn fizzbuzz(num: i32) -> String{
-    String::from("Hello")
+fn fizzbuzz(num: i32) -> String {
+    match (num % 3, num % 5) {
+        (0, 0) => String::from("fizzbuzz"),
+        (0, _) => String::from("fizz"),
+        (_, 0) => String::from("buzz"),
+        (_, _) => format!("{}", num),
+    }
 }
 
 fn main() {
-    for num in 1..101 {
-        if (num % 3 == 0) && (num % 5 == 0){
-            println!("fizzbuzz")
-        }
-        else if num % 3 == 0{
-            println!("fizz")
-        } else if num % 5 == 0{
-            println!("buzz")
-        } else {println!("{}",num)}
+    for x in 1..101 {
+        println!("{}", fizzbuzz(x))
     }
 }
 
 #[cfg(test)]
-mod tests{
+mod tests {
     use super::*;
 
     #[test]
-    fn test_fizz(){
+    fn test_fizz() {
         assert_eq!(fizzbuzz(36), String::from("fizz"))
     }
 
     #[test]
-    fn test_buzz(){
+    fn test_buzz() {
         assert_eq!(fizzbuzz(25), String::from("buzz"))
     }
 
     #[test]
-    fn test_fizzbuzz(){
+    fn test_fizzbuzz() {
         assert_eq!(fizzbuzz(30), String::from("fizzbuzz"))
     }
 }
