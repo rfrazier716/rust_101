@@ -1,14 +1,8 @@
-[package]
-name = "rust_101"
-version = "0.1.0"
-authors = ["RyanFrazier <rfrazier716@gmail.com>"]
-edition = "2018"
+[workspace]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+members = [
+    "guessing_game",
+    "fizzbuzz"
+]
 
-[dependencies]
-rand = "0.6.0"
 
-[[bin]]
-name = "guessing_game"
-path = "src/guessing_game/guessing_game.rs"
