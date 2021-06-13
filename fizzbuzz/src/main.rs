@@ -5,22 +5,22 @@ use std::fmt::Formatter;
 // Rust enums allow for contained values (this is exactly what Result and Option do)
 // Fizzbuzz is an opportunity to show it, since the num case can contain the actual value
 #[derive(Debug, PartialEq)]
-enum FizzBuzz{
+enum FizzBuzz {
     Fizz,
     Buzz,
     FizzBuzz,
-    Num(i32)
+    Num(i32),
 }
 
 // Implementing display lets us print the result
 // They all need to be strings, since calling format! on val has unknown stack size at compile time
-impl fmt::Display for FizzBuzz{
+impl fmt::Display for FizzBuzz {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        let display = match self{
+        let display = match self {
             FizzBuzz::Fizz => String::from("fizz"),
             FizzBuzz::Buzz => String::from("buzz"),
             FizzBuzz::FizzBuzz => String::from("fizzbuzz"),
-            FizzBuzz::Num(val) => format!("{}", val)
+            FizzBuzz::Num(val) => format!("{}", val),
         };
         write!(f, "{}", display)
     }
