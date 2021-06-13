@@ -26,18 +26,20 @@ impl fmt::Display for FizzBuzz {
     }
 }
 
-fn fizzbuzz(num: i32) -> FizzBuzz {
-    match (num % 3, num % 5) {
-        (0, 0) => FizzBuzz::FizzBuzz,
-        (0, _) => FizzBuzz::Fizz,
-        (_, 0) => FizzBuzz::Buzz,
-        (_, _) => FizzBuzz::Num(num),
+impl From<i32> for FizzBuzz {
+    fn from(num: i32) -> Self {
+        match (num % 3, num % 5) {
+            (0, 0) => FizzBuzz::FizzBuzz,
+            (0, _) => FizzBuzz::Fizz,
+            (_, 0) => FizzBuzz::Buzz,
+            (_, _) => FizzBuzz::Num(num),
+        }
     }
 }
 
 fn main() {
     for x in 1..101 {
-        println!("{}", fizzbuzz(x))
+        println!("{}", FizzBuzz::from(x))
     }
 }
 
@@ -47,21 +49,21 @@ mod tests {
 
     #[test]
     fn test_fizz() {
-        assert_eq!(fizzbuzz(36), FizzBuzz::Fizz)
+        assert_eq!(FizzBuzz::from(36), FizzBuzz::Fizz)
     }
 
     #[test]
     fn test_buzz() {
-        assert_eq!(fizzbuzz(25), FizzBuzz::Buzz)
+        assert_eq!(FizzBuzz::from(25), FizzBuzz::Buzz)
     }
 
     #[test]
     fn test_fizzbuzz() {
-        assert_eq!(fizzbuzz(30), FizzBuzz::FizzBuzz)
+        assert_eq!(FizzBuzz::from(30), FizzBuzz::FizzBuzz)
     }
 
     #[test]
     fn test_num() {
-        assert_eq!(fizzbuzz(7), FizzBuzz::Num(7))
+        assert_eq!(FizzBuzz::from(7), FizzBuzz::Num(7))
     }
 }
