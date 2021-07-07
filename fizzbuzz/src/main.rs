@@ -1,67 +1,63 @@
 // Did not know this comes from a children's game https://en.wikipedia.org/wiki/Fizz_buzz
-use core::fmt;
-use std::fmt::Formatter;
+use num_traits::{identities::Zero, PrimInt}; // 0.2.14
 
-// Rust enums allow for contained values (this is exactly what Result and Option do)
-// Fizzbuzz is an opportunity to show it, since the num case can contain the actual value
-#[derive(Debug, PartialEq)]
-enum FizzBuzz {
-    Fizz,
-    Buzz,
-    FizzBuzz,
-    Num(i32),
+pub trait Fizzy {
+    fn fizzy(&self) -> String;
 }
 
-// Implementing display lets us print the result
-impl fmt::Display for FizzBuzz {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        match self {
-            FizzBuzz::Fizz => write!(f, "fizz"),
-            FizzBuzz::Buzz => write!(f, "buzz"),
-            FizzBuzz::FizzBuzz => write!(f, "fizzbuzz"),
-            FizzBuzz::Num(val) => write!(f, "{}", val),
-        }
-    }
-}
-
-impl From<i32> for FizzBuzz {
-    fn from(num: i32) -> Self {
-        match (num % 3, num % 5) {
-            (0, 0) => FizzBuzz::FizzBuzz,
-            (0, _) => FizzBuzz::Fizz,
-            (_, 0) => FizzBuzz::Buzz,
-            _ => FizzBuzz::Num(num),
+impl<T> Fizzy for T
+where
+    T: PrimInt + Zero,
+    T: std::fmt::Display,
+{
+    fn fizzy(&self) -> String {
+        let zero = T::zero();
+        let three = T::from(3).unwrap(); // These will never fail
+        let five = T::from(5).unwrap();
+        match (*self % three, *self % five) {
+            (x, y) if x == zero && y == zero => String::from("FizzBuzz"),
+            (x, _) if x == zero => String::from("Fizz"),
+            (_, x) if x == zero => String::from("Buzz"),
+            _ => format!("{}", self),
         }
     }
 }
 
 fn main() {
-    for x in 1..101 {
-        println!("{}", FizzBuzz::from(x))
+    for (xi32, xu8) in (1..=30).zip(1u8..) {
+        println!("{}\t{}", xi32.fizzy(), xu8.fizzy())
     }
 }
 
 #[cfg(test)]
-mod tests {
+mod test {
     use super::*;
 
     #[test]
     fn test_fizz() {
-        assert_eq!(FizzBuzz::from(36), FizzBuzz::Fizz)
+        for x in &[3, 6, 27] {
+            assert_eq!(x.fizzy(), "Fizz")
+        }
     }
 
     #[test]
     fn test_buzz() {
-        assert_eq!(FizzBuzz::from(25), FizzBuzz::Buzz)
+        for x in &[5, 10, 20] {
+            assert_eq!(x.fizzy(), "Buzz")
+        }
     }
 
     #[test]
     fn test_fizzbuzz() {
-        assert_eq!(FizzBuzz::from(30), FizzBuzz::FizzBuzz)
+        for x in &[15, 30, 60] {
+            assert_eq!(x.fizzy(), "FizzBuzz")
+        }
     }
 
     #[test]
     fn test_num() {
-        assert_eq!(FizzBuzz::from(7), FizzBuzz::Num(7))
+        for x in &[7,13, 29] {
+            assert_eq!(x.fizzy(), format!("{}",x))
+        }
     }
 }
