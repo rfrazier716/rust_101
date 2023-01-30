@@ -3,7 +3,8 @@
 members = [
     "guessing_game",
     "fizzbuzz",
-    "variables"
+    "variables",
+    "rectangles",
 ]
 
 
